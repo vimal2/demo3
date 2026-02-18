@@ -1,6 +1,6 @@
-# Angular Routing - Complete Guide
+# Angular Routing
 
-This guide walks you through Angular routing concepts step by step, using this demo project as a practical reference.
+This document covers Angular routing concepts with practical examples from this demo project.
 
 ## Table of Contents
 
@@ -820,8 +820,7 @@ http://localhost:4200
 
 ---
 
-## Further Reading
+## References
 
 - [Angular Router Documentation](https://angular.io/guide/router)
-- [Angular Router Tutorial](https://angular.io/tutorial/toh-pt5)
 - [Route Guards](https://angular.io/guide/router#milestone-5-route-guards)
