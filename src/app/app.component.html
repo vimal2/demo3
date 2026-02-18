@@ -1,68 +1,12 @@
 <app-navbar></app-navbar>
 
 <main>
-  <!-- Router outlet - routed components will render here -->
-  <router-outlet></router-outlet>
-
-  <!-- Placeholder shown when no routes are configured -->
-  <div class="container mt-5 text-center" *ngIf="showPlaceholder">
-    <div class="alert alert-info">
-      <h4>Routing Not Configured Yet</h4>
-      <p>Open <code>src/app/app.module.ts</code> and uncomment the routes to get started.</p>
-      <p>Refer to <code>ROUTING.md</code> for details.</p>
-    </div>
-
-    <div class="card mt-4">
-      <div class="card-header">
-        <h5>Available Components</h5>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>HomeComponent</strong>
-              <p class="text-muted small mb-0">Landing page</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>AboutComponent</strong>
-              <p class="text-muted small mb-0">Fragment navigation demo</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>LoginComponent</strong>
-              <p class="text-muted small mb-0">Authentication</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>DashboardComponent</strong>
-              <p class="text-muted small mb-0">Protected route</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>ProductsComponent</strong>
-              <p class="text-muted small mb-0">Child routes</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <div class="border rounded p-3">
-              <strong>NotFoundComponent</strong>
-              <p class="text-muted small mb-0">404 page</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <app-home></app-home>
 </main>
 
-<footer class="bg-light py-4 mt-5">
+<!-- <footer class="bg-light py-4 mt-5">
   <div class="container text-center text-muted">
     <p class="mb-0">Angular Routing Demo</p>
     <small>Built with Angular 16 and Bootstrap 5</small>
   </div>
-</footer>
+</footer> -->
