@@ -1,0 +1,64 @@
+<div class="alert alert-info">
+  <strong>Query Parameters Demo:</strong>
+  Use the filters below. Notice how the URL updates with query parameters like
+  <code>?search=laptop&category=Electronics</code>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+  <div class="col-md-5">
+    <div class="input-group">
+      <span class="input-group-text">Search</span>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Search products...">
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="input-group">
+      <span class="input-group-text">Category</span>
+      <select class="form-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+      Clear Filters
+    </button>
+  </div>
+</div>
+
+<!-- Product Grid -->
+<div class="row">
+  <div class="col-md-6 col-lg-4 mb-4" *ngFor="let product of filteredProducts">
+    <div class="card h-100 product-card">
+      <div class="card-body">
+        <span class="badge bg-secondary mb-2">{{ product.category }}</span>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text text-muted">{{ product.description }}</p>
+        <h6 class="text-primary">${{ product.price | number:'1.2-2' }}</h6>
+      </div>
+      <div class="card-footer bg-transparent">
+        <!-- Using routerLink with route parameter -->
+        <a [routerLink]="['/products', product.id]" class="btn btn-primary btn-sm me-2">
+          View Details (routerLink)
+        </a>
+        <!-- Using programmatic navigation -->
+        <button class="btn btn-outline-primary btn-sm" (click)="viewProduct(product.id)">
+          View (Programmatic)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-warning" *ngIf="filteredProducts.length === 0">
+  No products found matching your criteria.
+</div>

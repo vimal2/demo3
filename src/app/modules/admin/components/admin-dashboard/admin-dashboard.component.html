@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <h1>Admin Dashboard</h1>
+
+  <div class="alert alert-warning">
+    <strong>Lazy Loaded Module!</strong><br>
+    This module was loaded on demand when you navigated to <code>/admin</code>.<br>
+    Check the browser's Network tab to see the separate chunk file.
+  </div>
+
+  <nav class="nav nav-pills mb-4">
+    <a class="nav-link" routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      Dashboard
+    </a>
+    <a class="nav-link" routerLink="/admin/users" routerLinkActive="active">
+      Manage Users
+    </a>
+  </nav>
+
+  <div class="row">
+    <div class="col-md-3 mb-4">
+      <div class="card bg-primary text-white">
+        <div class="card-body text-center">
+          <h2>{{ stats.totalUsers }}</h2>
+          <p class="mb-0">Total Users</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-success text-white">
+        <div class="card-body text-center">
+          <h2>{{ stats.activeUsers }}</h2>
+          <p class="mb-0">Active Users</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-info text-white">
+        <div class="card-body text-center">
+          <h2>{{ stats.totalProducts }}</h2>
+          <p class="mb-0">Products</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-warning text-dark">
+        <div class="card-body text-center">
+          <h2>{{ stats.pendingOrders }}</h2>
+          <p class="mb-0">Pending Orders</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Admin Actions</h5>
+    </div>
+    <div class="card-body">
+      <p>This area is protected by both <code>AuthGuard</code> and <code>AdminGuard</code>.</p>
+      <ul>
+        <li>Only authenticated users with admin role can access this module</li>
+        <li>The module is lazy loaded to improve initial load performance</li>
+        <li>Routes within this module use <code>RouterModule.forChild()</code></li>
+      </ul>
+    </div>
+  </div>
+</div>

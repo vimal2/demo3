@@ -1,0 +1,89 @@
+<div class="container mt-4">
+  <h1>About This Demo</h1>
+  <p class="lead">This application demonstrates various Angular routing concepts.</p>
+
+  <div class="alert alert-info" *ngIf="fragment">
+    <strong>Fragment detected:</strong> #{{ fragment }}
+  </div>
+
+  <nav class="nav nav-pills mb-4">
+    <a class="nav-link" routerLink="." fragment="overview">Overview</a>
+    <a class="nav-link" routerLink="." fragment="features">Features</a>
+    <a class="nav-link" routerLink="." fragment="technologies">Technologies</a>
+  </nav>
+
+  <section id="overview" class="mb-5">
+    <h2>Overview</h2>
+    <p>
+      Angular Router is a powerful routing library that enables navigation between views.
+      It interprets browser URLs as instructions to navigate to a specific view.
+      This demo covers everything from basic routing to advanced features like lazy loading and guards.
+    </p>
+  </section>
+
+  <section id="features" class="mb-5">
+    <h2>Features Demonstrated</h2>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>RouterLink Directive</strong> - Declarative navigation in templates
+      </li>
+      <li class="list-group-item">
+        <strong>RouterLinkActive</strong> - Styling active navigation links
+      </li>
+      <li class="list-group-item">
+        <strong>Route Parameters</strong> - Dynamic URL segments (:id)
+      </li>
+      <li class="list-group-item">
+        <strong>Query Parameters</strong> - Optional URL parameters (?key=value)
+      </li>
+      <li class="list-group-item">
+        <strong>Fragment Navigation</strong> - Hash-based page sections (#section)
+      </li>
+      <li class="list-group-item">
+        <strong>Programmatic Navigation</strong> - Router.navigate() method
+      </li>
+      <li class="list-group-item">
+        <strong>Child Routes</strong> - Nested routing with router-outlet
+      </li>
+      <li class="list-group-item">
+        <strong>Lazy Loading</strong> - Load modules on demand
+      </li>
+      <li class="list-group-item">
+        <strong>Route Guards</strong> - Protect routes with conditions
+      </li>
+      <li class="list-group-item">
+        <strong>Resolvers</strong> - Pre-fetch data before navigation
+      </li>
+    </ul>
+  </section>
+
+  <section id="technologies" class="mb-5">
+    <h2>Technologies Used</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5>Angular 16</h5>
+            <p class="text-muted">Frontend Framework</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5>Bootstrap 5</h5>
+            <p class="text-muted">CSS Framework</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5>TypeScript</h5>
+            <p class="text-muted">Programming Language</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

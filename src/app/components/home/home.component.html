@@ -1,0 +1,22 @@
+<div class="container mt-4">
+  <div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">{{ title }}</h1>
+    <p class="lead">Learn Angular routing step by step with practical examples.</p>
+    <hr class="my-4">
+    <p>This demo application covers all major routing concepts in Angular.</p>
+    <a class="btn btn-primary btn-lg" routerLink="/products">Explore Products</a>
+  </div>
+
+  <h2 class="mt-5 mb-4">Routing Features Covered</h2>
+
+  <div class="row">
+    <div class="col-md-6 col-lg-3 mb-4" *ngFor="let feature of features">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ feature.name }}</h5>
+          <p class="card-text text-muted">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
