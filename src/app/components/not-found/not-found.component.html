@@ -1,0 +1,28 @@
+<div class="container mt-5 text-center">
+  <div class="error-container">
+    <h1 class="display-1 text-danger">404</h1>
+    <h2>Page Not Found</h2>
+    <p class="lead text-muted">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+
+    <div class="alert alert-secondary mt-4">
+      <strong>Attempted URL:</strong> <code>{{ attemptedUrl }}</code>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-primary btn-lg me-2" (click)="goHome()">
+        Go to Home
+      </button>
+      <a routerLink="/products" class="btn btn-outline-secondary btn-lg">
+        Browse Products
+      </a>
+    </div>
+
+    <div class="mt-5 text-muted">
+      <small>
+        This is a <strong>wildcard route</strong> that catches all unmatched URLs.
+      </small>
+    </div>
+  </div>
+</div>

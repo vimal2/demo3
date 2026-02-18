@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'demo3';
+  title = 'Angular Routing Demo';
+
+  constructor(private router: Router) {}
+
+  // Show placeholder when no routes are configured
+  get showPlaceholder(): boolean {
+    return this.router.config.length === 0;
+  }
 }
