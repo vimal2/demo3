@@ -29,25 +29,23 @@ import { ProductDetailComponent } from './components/products/product-detail/pro
 // ============================================
 const routes: Routes = [
   // Step 1: Add basic routes
-  // { path: 'home', component: HomeComponent },
-  // { path: 'about', component: AboutComponent },
-  // { path: 'login', component: LoginComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'login', component: LoginComponent },
 
   // Step 2: Add redirect
-  // { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   // Step 3: Add protected route with guard
   // { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
 
   // Step 4: Add child routes
-  // {
-  //   path: 'products',
-  //   component: ProductsComponent,
-  //   children: [
-  //     { path: '', component: ProductListComponent },
-  //     { path: ':id', component: ProductDetailComponent }
-  //   ]
-  // },
+  {
+    path: 'products', component: ProductsComponent, children: [
+      { path: '', component: ProductListComponent },
+      { path: ':id', component: ProductDetailComponent}
+    ]
+  },
 
   // Step 5: Add lazy loaded module
   // {
