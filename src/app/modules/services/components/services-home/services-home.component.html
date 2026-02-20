@@ -1,0 +1,105 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Services & RxJS</h1>
+      <p class="lead text-muted">
+        Explore Angular services, dependency injection patterns, state management, and reactive programming with RxJS.
+      </p>
+    </div>
+  </div>
+
+  <!-- Demo Cards -->
+  <div class="row mb-5">
+    <div *ngFor="let demo of demos" class="col-md-4 mb-4">
+      <div class="card h-100 demo-card">
+        <div class="card-header" [class]="'bg-' + demo.color + ' text-white'">
+          <h5 class="mb-0">
+            <span class="me-2">{{ demo.icon }}</span>
+            {{ demo.title }}
+          </h5>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <p class="card-text">{{ demo.description }}</p>
+
+          <ul class="small mb-3 flex-grow-1">
+            <li *ngFor="let feature of demo.features">{{ feature }}</li>
+          </ul>
+
+          <div class="small text-muted mb-3">
+            <strong>Code:</strong>
+            <code class="d-block text-truncate">{{ demo.codeRef }}</code>
+          </div>
+
+          <a [routerLink]="demo.route" class="btn" [class]="'btn-' + demo.color">
+            Explore Demo →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Reference -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">BehaviorSubject Pattern</h5>
+        </div>
+        <div class="card-body p-0">
+          <pre class="bg-dark text-light p-3 mb-0"><code>{{ keyConceptsService }}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h5 class="mb-0">Signals Pattern (Angular 16+)</h5>
+        </div>
+        <div class="card-body p-0">
+          <pre class="bg-dark text-light p-3 mb-0"><code>{{ keyConceptsSignals }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Guidelines -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Service Guidelines</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <h6>When to Use Services</h6>
+          <ul class="small">
+            <li>Shared data between components</li>
+            <li>Business logic reusable across app</li>
+            <li>HTTP API calls</li>
+            <li>State management</li>
+            <li>Cross-cutting concerns (logging, auth)</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>Choosing State Pattern</h6>
+          <ul class="small">
+            <li><strong>BehaviorSubject:</strong> Async streams, HTTP, events</li>
+            <li><strong>Signals:</strong> Sync state, UI state, forms</li>
+            <li><strong>NgRx/NGXS:</strong> Large apps, complex state</li>
+            <li><strong>Component state:</strong> Local, transient data</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6>DI Best Practices</h6>
+          <ul class="small">
+            <li>Use <code>providedIn: 'root'</code> for singletons</li>
+            <li>Use InjectionToken for configs</li>
+            <li>Avoid circular dependencies</li>
+            <li>Keep services focused (SRP)</li>
+            <li>Use interfaces for contracts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

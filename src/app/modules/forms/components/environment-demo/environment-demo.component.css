@@ -1,0 +1,25 @@
+pre {
+  font-size: 0.8rem;
+  margin-bottom: 0;
+}
+
+pre code {
+  white-space: pre-wrap;
+}
+
+.table th {
+  background-color: #f8f9fa;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e7f1ff;
+}
+
+/* Angular-managed accordion (no Bootstrap JS needed) */
+.accordion-collapse {
+  display: none;
+}
+
+.accordion-collapse.show {
+  display: block;
+}

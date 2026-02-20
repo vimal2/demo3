@@ -1,0 +1,251 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/forms">Forms</a></li>
+          <li class="breadcrumb-item active">Template-Driven</li>
+        </ol>
+      </nav>
+      <h2>Template-Driven Forms Demo</h2>
+      <p class="text-muted">
+        A contact form demonstrating template-driven form techniques using ngModel,
+        built-in validators, and form state tracking.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Form Column -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Contact Form</h5>
+        </div>
+        <div class="card-body">
+          <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+            <!-- Name Field -->
+            <div class="mb-3">
+              <label for="name" class="form-label">Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                name="name"
+                [(ngModel)]="contact.name"
+                required
+                minlength="2"
+                #name="ngModel"
+                [class.is-invalid]="name.invalid && name.touched"
+                [class.is-valid]="name.valid && name.touched"
+              >
+              <div class="invalid-feedback" *ngIf="name.errors?.['required']">
+                Name is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="name.errors?.['minlength']">
+                Name must be at least 2 characters.
+              </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                [(ngModel)]="contact.email"
+                required
+                email
+                #email="ngModel"
+                [class.is-invalid]="email.invalid && email.touched"
+                [class.is-valid]="email.valid && email.touched"
+              >
+              <div class="invalid-feedback" *ngIf="email.errors?.['required']">
+                Email is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="email.errors?.['email']">
+                Please enter a valid email address.
+              </div>
+            </div>
+
+            <!-- Phone Field -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                name="phone"
+                [(ngModel)]="contact.phone"
+                pattern="^[\d\s\-\+\(\)]+$"
+                #phone="ngModel"
+                [class.is-invalid]="phone.invalid && phone.touched"
+                [class.is-valid]="phone.valid && phone.touched && phone.value"
+              >
+              <div class="invalid-feedback" *ngIf="phone.errors?.['pattern']">
+                Please enter a valid phone number.
+              </div>
+              <small class="text-muted">Optional - digits, spaces, +, -, (), allowed</small>
+            </div>
+
+            <!-- Subject Dropdown -->
+            <div class="mb-3">
+              <label for="subject" class="form-label">Subject *</label>
+              <select
+                class="form-select"
+                id="subject"
+                name="subject"
+                [(ngModel)]="contact.subject"
+                required
+                #subject="ngModel"
+              >
+                <option *ngFor="let s of subjects" [value]="s.value">
+                  {{ s.label }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Message Field -->
+            <div class="mb-3">
+              <label for="message" class="form-label">Message *</label>
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                rows="4"
+                [(ngModel)]="contact.message"
+                required
+                minlength="10"
+                #message="ngModel"
+                [class.is-invalid]="message.invalid && message.touched"
+                [class.is-valid]="message.valid && message.touched"
+              ></textarea>
+              <div class="invalid-feedback" *ngIf="message.errors?.['required']">
+                Message is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="message.errors?.['minlength']">
+                Message must be at least 10 characters.
+              </div>
+              <small class="text-muted">
+                {{ contact.message.length }}/10 characters minimum
+              </small>
+            </div>
+
+            <!-- Newsletter Checkbox -->
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="newsletter"
+                name="newsletter"
+                [(ngModel)]="contact.newsletter"
+              >
+              <label class="form-check-label" for="newsletter">
+                Subscribe to newsletter
+              </label>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="contactForm.invalid"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="onReset(contactForm)"
+              >
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- State Display Column -->
+    <div class="col-md-6">
+      <!-- Form State Card -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Form State</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm mb-0">
+            <tbody>
+              <tr>
+                <td>Valid:</td>
+                <td>
+                  <span [class]="contactForm.valid ? 'badge bg-success' : 'badge bg-danger'">
+                    {{ contactForm.valid }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Invalid:</td>
+                <td>
+                  <span [class]="contactForm.invalid ? 'badge bg-danger' : 'badge bg-success'">
+                    {{ contactForm.invalid }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Pristine:</td>
+                <td>
+                  <span class="badge bg-info">{{ contactForm.pristine }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Dirty:</td>
+                <td>
+                  <span class="badge bg-info">{{ contactForm.dirty }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Touched:</td>
+                <td>
+                  <span class="badge bg-info">{{ contactForm.touched }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Untouched:</td>
+                <td>
+                  <span class="badge bg-info">{{ contactForm.untouched }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Form Value Card -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Form Value (Live)</h5>
+        </div>
+        <div class="card-body">
+          <pre class="mb-0"><code>{{ contactForm.value | json }}</code></pre>
+        </div>
+      </div>
+
+      <!-- Submitted Data Card -->
+      <div class="card" *ngIf="submitted">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Submitted Data</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success mb-3">
+            Form submitted successfully!
+          </div>
+          <pre class="mb-0"><code>{{ submittedData | json }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

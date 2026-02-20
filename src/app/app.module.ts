@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -37,17 +38,17 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    title: 'Home - Angular Routing Demo'
+    title: 'Home - Angular Demo'
   },
   {
     path: 'about',
     component: AboutComponent,
-    title: 'About - Angular Routing Demo'
+    title: 'About - Angular Demo'
   },
   {
     path: 'login',
     component: LoginComponent,
-    title: 'Login - Angular Routing Demo'
+    title: 'Login - Angular Demo'
   },
 
   // Protected route with canActivate and canDeactivate guards
@@ -56,14 +57,14 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
     canDeactivate: [ConfirmLeaveGuard],
-    title: 'Dashboard - Angular Routing Demo'
+    title: 'Dashboard - Angular Demo'
   },
 
   // Products with child routes
   {
     path: 'products',
     component: ProductsComponent,
-    title: 'Products - Angular Routing Demo',
+    title: 'Products - Angular Demo',
     children: [
       {
         path: '',
@@ -75,7 +76,7 @@ const routes: Routes = [
         resolve: {
           product: ProductResolver
         },
-        title: 'Product Detail - Angular Routing Demo'
+        title: 'Product Detail - Angular Demo'
       }
     ]
   },
@@ -85,7 +86,21 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
     canMatch: [AdminGuard],
-    title: 'Admin - Angular Routing Demo'
+    title: 'Admin - Angular Demo'
+  },
+
+  // Lazy loaded forms module
+  {
+    path: 'forms',
+    loadChildren: () => import('./modules/forms/forms.module').then(m => m.FormsFeatureModule),
+    title: 'Forms - Angular Demo'
+  },
+
+  // Lazy loaded services module
+  {
+    path: 'services',
+    loadChildren: () => import('./modules/services/services.module').then(m => m.ServicesModule),
+    title: 'Services - Angular Demo'
   },
 
   // Wildcard route - must be last
@@ -112,6 +127,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled'
     })

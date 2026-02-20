@@ -1,0 +1,41 @@
+.log-output {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid #333;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.pattern-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pattern-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+pre {
+  font-size: 0.8rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+code {
+  font-size: 0.85em;
+}

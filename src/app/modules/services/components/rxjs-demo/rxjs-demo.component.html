@@ -1,0 +1,278 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/services">Services</a></li>
+          <li class="breadcrumb-item active">RxJS Operators</li>
+        </ol>
+      </nav>
+      <h2>RxJS Operators Demo</h2>
+      <p class="text-muted">
+        Essential RxJS operators for reactive programming in Angular applications.
+      </p>
+    </div>
+  </div>
+
+  <!-- Interactive Search Demo -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Live Demo: Search with switchMap + debounceTime</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Search (type to see debounce + switchMap)</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Try: Angular, RxJS, TypeScript..."
+              [value]="searchTerm"
+              (input)="onSearchInput($event)">
+            <small class="text-muted">
+              Waits 300ms, cancels previous requests, filters distinct values
+            </small>
+          </div>
+
+          <div *ngIf="isSearching" class="text-muted mb-2">
+            <span class="spinner-border spinner-border-sm me-1"></span> Searching...
+          </div>
+
+          <div *ngIf="searchResults.length > 0" class="list-group">
+            <div *ngFor="let result of searchResults" class="list-group-item">
+              <strong>{{ result.title }}</strong>
+              <span class="badge bg-secondary float-end">{{ result.category }}</span>
+            </div>
+          </div>
+
+          <div *ngIf="searchResults.length === 0 && searchTerm && !isSearching" class="text-muted">
+            No results found for "{{ searchTerm }}"
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <strong>Operation Log:</strong>
+          <button class="btn btn-sm btn-outline-secondary float-end" (click)="clearLog()">
+            Clear
+          </button>
+          <div class="operation-log mt-2">
+            <div *ngFor="let log of operationLog" class="log-entry small">
+              {{ log }}
+            </div>
+            <div *ngIf="operationLog.length === 0" class="text-muted small">
+              Type in the search box to see operators in action
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operator Categories -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white">Transformation</div>
+        <div class="card-body">
+          <div *ngFor="let op of getOperatorCategory('transformation')" class="mb-2">
+            <button
+              class="btn btn-sm w-100"
+              [class.btn-info]="selectedOperator === op.name"
+              [class.btn-outline-info]="selectedOperator !== op.name"
+              (click)="runOperatorDemo(op.name)">
+              {{ op.name }}
+            </button>
+            <small class="d-block text-muted">{{ op.description }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-warning">Filtering</div>
+        <div class="card-body">
+          <div *ngFor="let op of getOperatorCategory('filtering')" class="mb-2">
+            <button
+              class="btn btn-sm w-100"
+              [class.btn-warning]="selectedOperator === op.name"
+              [class.btn-outline-warning]="selectedOperator !== op.name"
+              (click)="runOperatorDemo(op.name)">
+              {{ op.name }}
+            </button>
+            <small class="d-block text-muted">{{ op.description }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-header bg-danger text-white">Error Handling</div>
+        <div class="card-body">
+          <div *ngFor="let op of getOperatorCategory('error')" class="mb-2">
+            <button
+              class="btn btn-sm w-100"
+              [class.btn-danger]="selectedOperator === op.name"
+              [class.btn-outline-danger]="selectedOperator !== op.name"
+              (click)="runOperatorDemo(op.name)">
+              {{ op.name }}
+            </button>
+            <small class="d-block text-muted">{{ op.description }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- catchError Interactive Demo -->
+  <div class="card mb-4" *ngIf="selectedOperator === 'catchError'">
+    <div class="card-header">
+      <h5 class="mb-0">catchError Demo</h5>
+    </div>
+    <div class="card-body">
+      <div class="form-check mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="shouldFail"
+          [checked]="shouldFail"
+          (change)="toggleShouldFail()">
+        <label class="form-check-label" for="shouldFail">
+          Simulate error (throwError)
+        </label>
+      </div>
+
+      <div class="alert" [class.alert-success]="!shouldFail" [class.alert-warning]="shouldFail">
+        <strong>Result:</strong> {{ errorResult || 'Click toggle to test' }}
+      </div>
+
+      <div class="operation-log">
+        <div *ngFor="let log of operationLog" class="log-entry small">
+          {{ log }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operator Result Display -->
+  <div class="card mb-4" *ngIf="demoResult && selectedOperator !== 'catchError'">
+    <div class="card-header">
+      <h5 class="mb-0">{{ selectedOperator }} Result</h5>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success">
+        <strong>Output:</strong> {{ demoResult }}
+      </div>
+
+      <div class="operation-log">
+        <div *ngFor="let log of operationLog" class="log-entry small">
+          {{ log }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Code Example: {{ selectedOperator }}</h5>
+    </div>
+    <div class="card-body p-0">
+      <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets[selectedOperator] || codeSnippets['map'] }}</code></pre>
+    </div>
+  </div>
+
+  <!-- Complete Pipeline Example -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Complete Search Pipeline</h5>
+    </div>
+    <div class="card-body p-0">
+      <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets['searchPipeline'] }}</code></pre>
+    </div>
+  </div>
+
+  <!-- Operators Cheat Sheet -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">RxJS Operators Cheat Sheet</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Operator</th>
+              <th>Purpose</th>
+              <th>Common Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>map</code></td>
+              <td>Transform each emitted value</td>
+              <td>Convert API response to model</td>
+            </tr>
+            <tr>
+              <td><code>filter</code></td>
+              <td>Only emit values passing condition</td>
+              <td>Filter out invalid data</td>
+            </tr>
+            <tr>
+              <td><code>tap</code></td>
+              <td>Side effects without changing stream</td>
+              <td>Logging, debugging, analytics</td>
+            </tr>
+            <tr>
+              <td><code>catchError</code></td>
+              <td>Handle errors gracefully</td>
+              <td>Show error message, provide fallback</td>
+            </tr>
+            <tr>
+              <td><code>switchMap</code></td>
+              <td>Map to new observable, cancel previous</td>
+              <td>Search input, HTTP requests</td>
+            </tr>
+            <tr>
+              <td><code>mergeMap</code></td>
+              <td>Map to observable, run in parallel</td>
+              <td>Parallel HTTP requests</td>
+            </tr>
+            <tr>
+              <td><code>concatMap</code></td>
+              <td>Map to observable, queue in order</td>
+              <td>Sequential operations</td>
+            </tr>
+            <tr>
+              <td><code>debounceTime</code></td>
+              <td>Wait for pause in emissions</td>
+              <td>Search input, resize events</td>
+            </tr>
+            <tr>
+              <td><code>distinctUntilChanged</code></td>
+              <td>Only emit when value changes</td>
+              <td>Prevent duplicate API calls</td>
+            </tr>
+            <tr>
+              <td><code>takeUntil</code></td>
+              <td>Complete when notifier emits</td>
+              <td>Unsubscribe on component destroy</td>
+            </tr>
+            <tr>
+              <td><code>take</code></td>
+              <td>Take first n emissions</td>
+              <td>One-time operations</td>
+            </tr>
+            <tr>
+              <td><code>combineLatest</code></td>
+              <td>Combine latest from multiple streams</td>
+              <td>Combine filters, form values</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

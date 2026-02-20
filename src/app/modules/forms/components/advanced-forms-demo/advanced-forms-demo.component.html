@@ -1,0 +1,322 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/forms">Forms</a></li>
+          <li class="breadcrumb-item active">Advanced Forms</li>
+        </ol>
+      </nav>
+      <h2>Advanced Forms Demo</h2>
+      <p class="text-muted">
+        A profile builder demonstrating FormArray, async validators, conditional validation,
+        and value changes subscriptions.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Form Column -->
+    <div class="col-md-7">
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <!-- Username with async validation -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h6 class="mb-0">Username (Async Validation)</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-0">
+              <label for="username" class="form-label">Username *</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  formControlName="username"
+                  [class.is-invalid]="hasError('username', 'required') || hasError('username', 'minlength') || hasError('username', 'usernameTaken')"
+                  [class.is-valid]="profileForm.get('username')?.valid && profileForm.get('username')?.touched"
+                >
+                <span class="input-group-text" *ngIf="isCheckingUsername()">
+                  <span class="spinner-border spinner-border-sm"></span>
+                </span>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="hasError('username', 'required')">
+                Username is required.
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="hasError('username', 'minlength')">
+                Username must be at least 3 characters.
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="hasError('username', 'usernameTaken')">
+                This username is already taken.
+              </div>
+              <small class="text-muted">Try: admin, user, test (taken) or anything else (available)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile nested group -->
+        <div class="card mb-3" formGroupName="profile">
+          <div class="card-header">
+            <h6 class="mb-0">Profile Information</h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  formControlName="firstName"
+                  [class.is-invalid]="hasError('profile.firstName', 'required')"
+                >
+                <div class="invalid-feedback">First name is required.</div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  formControlName="lastName"
+                  [class.is-invalid]="hasError('profile.lastName', 'required')"
+                >
+                <div class="invalid-feedback">Last name is required.</div>
+              </div>
+            </div>
+            <div class="mb-0">
+              <label for="bio" class="form-label">Bio</label>
+              <textarea
+                class="form-control"
+                id="bio"
+                formControlName="bio"
+                rows="2"
+                [class.is-invalid]="hasError('profile.bio', 'maxlength')"
+              ></textarea>
+              <div class="invalid-feedback">Bio cannot exceed 500 characters.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact with conditional validation -->
+        <div class="card mb-3" formGroupName="contact">
+          <div class="card-header">
+            <h6 class="mb-0">Contact (Conditional Validation)</h6>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Preferred Contact Method</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="prefEmail" value="email" formControlName="preferredContact">
+                  <label class="form-check-label" for="prefEmail">Email</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" id="prefPhone" value="phone" formControlName="preferredContact">
+                  <label class="form-check-label" for="prefPhone">Phone</label>
+                </div>
+              </div>
+              <small class="text-muted">Phone becomes required when selected as preferred</small>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="contactEmail" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="contactEmail"
+                  formControlName="email"
+                  [class.is-invalid]="hasError('contact.email', 'required') || hasError('contact.email', 'email')"
+                >
+                <div class="invalid-feedback" *ngIf="hasError('contact.email', 'required')">Email is required.</div>
+                <div class="invalid-feedback" *ngIf="hasError('contact.email', 'email')">Invalid email format.</div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="phone" class="form-label">
+                  Phone
+                  <span *ngIf="profileForm.get('contact.preferredContact')?.value === 'phone'">*</span>
+                </label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  [class.is-invalid]="hasError('contact.phone', 'required') || hasError('contact.phone', 'pattern')"
+                >
+                <div class="invalid-feedback" *ngIf="hasError('contact.phone', 'required')">Phone is required.</div>
+                <div class="invalid-feedback" *ngIf="hasError('contact.phone', 'pattern')">Invalid phone format.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills FormArray -->
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Skills (FormArray)</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="addSkill()">
+              + Add Skill
+            </button>
+          </div>
+          <div class="card-body">
+            <div formArrayName="skills">
+              <div *ngFor="let skill of skills.controls; let i = index" [formGroupName]="i" class="skill-row mb-3">
+                <div class="row align-items-end">
+                  <div class="col-md-4">
+                    <label class="form-label">Skill Name *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="name"
+                      placeholder="e.g., Angular"
+                    >
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Level *</label>
+                    <select class="form-select" formControlName="level">
+                      <option *ngFor="let level of skillLevels" [value]="level">{{ level }}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Years *</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      formControlName="yearsOfExperience"
+                      min="0"
+                      max="50"
+                    >
+                  </div>
+                  <div class="col-md-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-sm w-100"
+                      (click)="removeSkill(i)"
+                      [disabled]="skills.length === 1"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience FormArray -->
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Work Experience (Nested FormArray)</h6>
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="addExperience()">
+              + Add Experience
+            </button>
+          </div>
+          <div class="card-body">
+            <div formArrayName="experience">
+              <div *ngIf="experience.length === 0" class="text-muted text-center py-3">
+                No work experience added. Click "Add Experience" to begin.
+              </div>
+              <div *ngFor="let exp of experience.controls; let i = index" [formGroupName]="i" class="experience-item mb-3 p-3 border rounded">
+                <div class="d-flex justify-content-between mb-2">
+                  <strong>Experience #{{ i + 1 }}</strong>
+                  <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeExperience(i)">
+                    Remove
+                  </button>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Company *</label>
+                    <input type="text" class="form-control" formControlName="company">
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <label class="form-label">Position *</label>
+                    <input type="text" class="form-control" formControlName="position">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4 mb-2">
+                    <label class="form-label">Start Date *</label>
+                    <input type="date" class="form-control" formControlName="startDate">
+                  </div>
+                  <div class="col-md-4 mb-2">
+                    <label class="form-label">End Date</label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      formControlName="endDate"
+                      [disabled]="exp.get('current')?.value"
+                    >
+                  </div>
+                  <div class="col-md-4 mb-2 d-flex align-items-end">
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        [id]="'current' + i"
+                        formControlName="current"
+                        (change)="onCurrentJobChange(i)"
+                      >
+                      <label class="form-check-label" [for]="'current' + i">Current Job</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-0">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" formControlName="description" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-2 mb-4">
+          <button type="submit" class="btn btn-primary">
+            Save Profile
+          </button>
+          <button type="button" class="btn btn-outline-secondary" (click)="onReset()">
+            Reset All
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- State Display Column -->
+    <div class="col-md-5">
+      <!-- Value Changes Log -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0">Value Changes Log</h6>
+        </div>
+        <div class="card-body log-container">
+          <div *ngIf="valueChangesLog.length === 0" class="text-muted">
+            Start typing to see value changes...
+          </div>
+          <div *ngFor="let log of valueChangesLog" class="log-entry">
+            {{ log }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Value -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="mb-0">Form Value (Live)</h6>
+        </div>
+        <div class="card-body">
+          <pre class="mb-0"><code>{{ profileForm.value | json }}</code></pre>
+        </div>
+      </div>
+
+      <!-- Submitted Data -->
+      <div class="card" *ngIf="submitted">
+        <div class="card-header bg-success text-white">
+          <h6 class="mb-0">Profile Saved!</h6>
+        </div>
+        <div class="card-body">
+          <pre class="mb-0"><code>{{ submittedData | json }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
