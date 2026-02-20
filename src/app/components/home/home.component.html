@@ -1,22 +1,171 @@
 <div class="container mt-4">
-  <div class="jumbotron bg-light p-5 rounded">
+  <!-- Hero Section -->
+  <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
     <h1 class="display-4">{{ title }}</h1>
-    <p class="lead">Angular routing with practical examples.</p>
-    <hr class="my-4">
-    <p>This demo application covers all major routing concepts in Angular.</p>
-    <a class="btn btn-primary btn-lg" routerLink="/products">Explore Products</a>
+    <p class="lead">{{ subtitle }}</p>
+    <hr class="my-4 bg-light">
+    <p>Explore routing, forms, unit testing, and configuration patterns with practical examples.</p>
+    <div class="d-flex gap-2 flex-wrap">
+      <a *ngFor="let link of quickLinks"
+         [routerLink]="link.route"
+         class="btn btn-light">
+        {{ link.label }}
+      </a>
+    </div>
   </div>
 
-  <h2 class="mt-5 mb-4">Routing Features Covered</h2>
-
+  <!-- Demo Sections -->
   <div class="row">
-    <div class="col-md-6 col-lg-3 mb-4" *ngFor="let feature of features">
+    <div class="col-lg-6 mb-4" *ngFor="let section of demoSections">
       <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <span class="me-2">{{ section.icon }}</span>
+            {{ section.title }}
+          </h5>
+          <a *ngIf="section.route"
+             [routerLink]="section.route"
+             class="btn btn-sm btn-outline-primary">
+            View Demo
+          </a>
+        </div>
         <div class="card-body">
-          <h5 class="card-title">{{ feature.name }}</h5>
-          <p class="card-text text-muted">{{ feature.description }}</p>
+          <p class="text-muted mb-3">{{ section.description }}</p>
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Feature</th>
+                  <th>Code Reference</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let feature of section.features">
+                  <td>
+                    <strong>{{ feature.name }}</strong>
+                    <br>
+                    <small class="text-muted">{{ feature.description }}</small>
+                  </td>
+                  <td>
+                    <code class="small">{{ feature.codeRef }}</code>
+                    <a *ngIf="feature.route"
+                       [routerLink]="feature.route"
+                       class="ms-2 badge bg-primary text-decoration-none">
+                      Demo
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Project Structure -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Project Structure</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <pre class="bg-dark text-light p-3 rounded small mb-0"><code>src/app/
+├── components/          # Eagerly loaded components
+│   ├── home/
+│   ├── login/
+│   ├── dashboard/
+│   ├── navbar/
+│   └── products/        # Nested routes
+│       ├── product-list/
+│       └── product-detail/
+├── modules/             # Feature modules (lazy)
+│   ├── admin/
+│   └── forms/
+├── guards/              # Route guards
+│   ├── auth.guard.ts
+│   ├── admin.guard.ts
+│   └── confirm-leave.guard.ts
+├── resolvers/           # Route resolvers
+│   └── product.resolver.ts
+└── services/            # Injectable services
+    ├── auth.service.ts
+    ├── product.service.ts
+    └── api.service.ts</code></pre>
+        </div>
+        <div class="col-md-6">
+          <pre class="bg-dark text-light p-3 rounded small mb-0"><code>src/
+├── environments/        # Environment configs
+│   ├── environment.ts
+│   ├── environment.prod.ts
+│   └── environment.staging.ts
+│
+# Test Files (alongside source)
+├── *.spec.ts            # Unit tests
+│
+# Configuration
+├── angular.json         # Build configs
+├── tsconfig.json        # TypeScript config
+└── karma.conf.js        # Test runner config</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Commands Reference -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Useful Commands</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="table-light">
+            <tr>
+              <th style="width: 50%">Command</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cmd of testCommands">
+              <td><code>{{ cmd.command }}</code></td>
+              <td>{{ cmd.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Start -->
+  <div class="card mb-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Quick Start Guide</h5>
+    </div>
+    <div class="card-body">
+      <ol class="mb-0">
+        <li class="mb-2">
+          <strong>Routing:</strong> Check <code>app.module.ts</code> for route configuration.
+          Visit <a routerLink="/products">/products</a> to see params and nested routes in action.
+        </li>
+        <li class="mb-2">
+          <strong>Guards:</strong> Try accessing <a routerLink="/dashboard">/dashboard</a> without logging in.
+          Login with any credentials, check "Admin" to access <a routerLink="/admin">/admin</a>.
+        </li>
+        <li class="mb-2">
+          <strong>Forms:</strong> Visit <a routerLink="/forms">/forms</a> to explore template-driven,
+          reactive, and advanced form patterns.
+        </li>
+        <li class="mb-2">
+          <strong>Testing:</strong> Run <code>ng test</code> to execute 110+ unit tests.
+          Check <code>*.spec.ts</code> files for test examples.
+        </li>
+        <li>
+          <strong>Environment Config:</strong> See <code>src/environments/</code> for per-environment settings.
+          Try <code>ng serve --configuration=staging</code>.
+        </li>
+      </ol>
     </div>
   </div>
 </div>

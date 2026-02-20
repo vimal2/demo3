@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -16,46 +17,98 @@ import { ProductsComponent } from './components/products/products.component';
 import { ProductListComponent } from './components/products/product-list/product-list.component';
 import { ProductDetailComponent } from './components/products/product-detail/product-detail.component';
 
-// Guards (created but not used yet)
-// import { AuthGuard } from './guards/auth.guard';
-// import { AdminGuard } from './guards/admin.guard';
-// import { ConfirmLeaveGuard } from './guards/confirm-leave.guard';
+// Guards
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+import { ConfirmLeaveGuard } from './guards/confirm-leave.guard';
 
-// Resolvers (created but not used yet)
-// import { ProductResolver } from './resolvers/product.resolver';
+// Resolvers
+import { ProductResolver } from './resolvers/product.resolver';
 
-// ============================================
-// TODO: Configure routes here
-// ============================================
+// Route Configuration
 const routes: Routes = [
-  // Step 1: Add basic routes
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'login', component: LoginComponent },
-
-  // Step 2: Add redirect
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-
-  // Step 3: Add protected route with guard
-  // { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-
-  // Step 4: Add child routes
+  // Redirect root to home
   {
-    path: 'products', component: ProductsComponent, children: [
-      { path: '', component: ProductListComponent },
-      { path: ':id', component: ProductDetailComponent}
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+
+  // Basic routes
+  {
+    path: 'home',
+    component: HomeComponent,
+    title: 'Home - Angular Demo'
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+    title: 'About - Angular Demo'
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Login - Angular Demo'
+  },
+
+  // Protected route with canActivate and canDeactivate guards
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+    canDeactivate: [ConfirmLeaveGuard],
+    title: 'Dashboard - Angular Demo'
+  },
+
+  // Products with child routes
+  {
+    path: 'products',
+    component: ProductsComponent,
+    title: 'Products - Angular Demo',
+    children: [
+      {
+        path: '',
+        component: ProductListComponent
+      },
+      {
+        path: ':id',
+        component: ProductDetailComponent,
+        resolve: {
+          product: ProductResolver
+        },
+        title: 'Product Detail - Angular Demo'
+      }
     ]
   },
 
-  // Step 5: Add lazy loaded module
-  // {
-  //   path: 'admin',
-  //   loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
-  //   canMatch: [AdminGuard]
-  // },
+  // Lazy loaded admin module with canMatch guard
+  {
+    path: 'admin',
+    loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule),
+    canMatch: [AdminGuard],
+    title: 'Admin - Angular Demo'
+  },
 
-  // Step 6: Add wildcard route (must be last)
-  // { path: '**', component: NotFoundComponent }
+  // Lazy loaded forms module
+  {
+    path: 'forms',
+    loadChildren: () => import('./modules/forms/forms.module').then(m => m.FormsFeatureModule),
+    title: 'Forms - Angular Demo'
+  },
+
+  // Lazy loaded services module
+  {
+    path: 'services',
+    loadChildren: () => import('./modules/services/services.module').then(m => m.ServicesModule),
+    title: 'Services - Angular Demo'
+  },
+
+  // Wildcard route - must be last
+  {
+    path: '**',
+    component: NotFoundComponent,
+    title: '404 Not Found'
+  }
 ];
 
 @NgModule({
@@ -74,6 +127,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes, {
       anchorScrolling: 'enabled'
     })

@@ -1,0 +1,13 @@
+pre {
+  font-size: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.display-3 {
+  font-weight: bold;
+}
+
+.badge {
+  font-weight: normal;
+}

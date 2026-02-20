@@ -1,0 +1,290 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/forms">Forms</a></li>
+          <li class="breadcrumb-item active">Reactive Forms</li>
+        </ol>
+      </nav>
+      <h2>Reactive Forms Demo</h2>
+      <p class="text-muted">
+        A registration form demonstrating reactive form techniques using FormBuilder,
+        FormGroup, nested groups, and cross-field validation.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Form Column -->
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Registration Form</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Username *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                formControlName="username"
+                [class.is-invalid]="hasError('username', 'required') || hasError('username', 'minlength') || hasError('username', 'maxlength') || hasError('username', 'pattern')"
+                [class.is-valid]="f['username'].valid && f['username'].touched"
+              >
+              <div class="invalid-feedback" *ngIf="hasError('username', 'required')">
+                Username is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('username', 'minlength')">
+                Username must be at least 3 characters.
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('username', 'maxlength')">
+                Username cannot exceed 20 characters.
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('username', 'pattern')">
+                Username can only contain letters, numbers, and underscores.
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [class.is-invalid]="hasError('email', 'required') || hasError('email', 'email')"
+                [class.is-valid]="f['email'].valid && f['email'].touched"
+              >
+              <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+                Email is required.
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+                Please enter a valid email address.
+              </div>
+            </div>
+
+            <!-- Password Group -->
+            <div class="card mb-3" formGroupName="passwords">
+              <div class="card-header py-2">
+                <small class="fw-bold">Password</small>
+              </div>
+              <div class="card-body">
+                <!-- Password -->
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password *</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    formControlName="password"
+                    [class.is-invalid]="hasError('passwords.password', 'required') || hasError('passwords.password', 'minlength') || hasError('passwords.password', 'passwordStrength')"
+                    [class.is-valid]="passwordsGroup.get('password')?.valid && passwordsGroup.get('password')?.touched"
+                  >
+                  <div class="invalid-feedback" *ngIf="hasError('passwords.password', 'required')">
+                    Password is required.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="hasError('passwords.password', 'minlength')">
+                    Password must be at least 8 characters.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="hasError('passwords.password', 'passwordStrength')">
+                    Password must contain uppercase, lowercase, and a number.
+                  </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-0">
+                  <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    [class.is-invalid]="hasError('passwords.confirmPassword', 'required') || (passwordsGroup.hasError('passwordMismatch') && passwordsGroup.get('confirmPassword')?.touched)"
+                    [class.is-valid]="passwordsGroup.get('confirmPassword')?.valid && !passwordsGroup.hasError('passwordMismatch') && passwordsGroup.get('confirmPassword')?.touched"
+                  >
+                  <div class="invalid-feedback" *ngIf="hasError('passwords.confirmPassword', 'required')">
+                    Please confirm your password.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="passwordsGroup.hasError('passwordMismatch') && passwordsGroup.get('confirmPassword')?.touched">
+                    Passwords do not match.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Group -->
+            <div class="card mb-3" formGroupName="address">
+              <div class="card-header py-2">
+                <small class="fw-bold">Address</small>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label for="street" class="form-label">Street *</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="street"
+                    formControlName="street"
+                    [class.is-invalid]="hasError('address.street', 'required')"
+                  >
+                  <div class="invalid-feedback">Street is required.</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="city" class="form-label">City *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="city"
+                      formControlName="city"
+                      [class.is-invalid]="hasError('address.city', 'required')"
+                    >
+                    <div class="invalid-feedback">City is required.</div>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <label for="state" class="form-label">State *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="state"
+                      formControlName="state"
+                      [class.is-invalid]="hasError('address.state', 'required')"
+                    >
+                    <div class="invalid-feedback">State is required.</div>
+                  </div>
+                  <div class="col-md-3 mb-3">
+                    <label for="zipCode" class="form-label">Zip *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="zipCode"
+                      formControlName="zipCode"
+                      [class.is-invalid]="hasError('address.zipCode', 'required') || hasError('address.zipCode', 'pattern')"
+                    >
+                    <div class="invalid-feedback" *ngIf="hasError('address.zipCode', 'required')">
+                      Zip is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="hasError('address.zipCode', 'pattern')">
+                      Invalid zip code format.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional Fields -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  [class.is-invalid]="hasError('phone', 'pattern')"
+                >
+                <div class="invalid-feedback">Invalid phone format.</div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="birthDate" class="form-label">Birth Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="birthDate"
+                  formControlName="birthDate"
+                >
+              </div>
+            </div>
+
+            <!-- Terms Checkbox -->
+            <div class="mb-3 form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="agreeToTerms"
+                formControlName="agreeToTerms"
+                [class.is-invalid]="hasError('agreeToTerms', 'required')"
+              >
+              <label class="form-check-label" for="agreeToTerms">
+                I agree to the terms and conditions *
+              </label>
+              <div class="invalid-feedback">You must agree to the terms.</div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">
+                Register
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="onReset()">
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- State Display Column -->
+    <div class="col-md-5">
+      <!-- Form State -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Form State</h5>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm mb-0">
+            <tbody>
+              <tr>
+                <td>Valid:</td>
+                <td>
+                  <span [class]="registrationForm.valid ? 'badge bg-success' : 'badge bg-danger'">
+                    {{ registrationForm.valid }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>Pristine:</td>
+                <td><span class="badge bg-info">{{ registrationForm.pristine }}</span></td>
+              </tr>
+              <tr>
+                <td>Dirty:</td>
+                <td><span class="badge bg-info">{{ registrationForm.dirty }}</span></td>
+              </tr>
+              <tr>
+                <td>Touched:</td>
+                <td><span class="badge bg-info">{{ registrationForm.touched }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Form Value -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h5 class="mb-0">Form Value (Live)</h5>
+        </div>
+        <div class="card-body">
+          <pre class="mb-0"><code>{{ registrationForm.value | json }}</code></pre>
+        </div>
+      </div>
+
+      <!-- Submitted Data -->
+      <div class="card" *ngIf="submitted">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Registration Successful!</h5>
+        </div>
+        <div class="card-body">
+          <pre class="mb-0"><code>{{ submittedData | json }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

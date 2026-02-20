@@ -1,0 +1,238 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/forms">Forms & Config</a></li>
+          <li class="breadcrumb-item active">Environment Config</li>
+        </ol>
+      </nav>
+      <h2>Environment Configuration Demo</h2>
+      <p class="text-muted">
+        Demonstrates how to externalize configuration (like API URLs) per environment
+        using Angular's built-in environment files.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Current Environment Info -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Current Environment</h5>
+        </div>
+        <div class="card-body" *ngIf="environmentInfo">
+          <table class="table table-bordered mb-0">
+            <tbody>
+              <tr>
+                <th scope="row" class="w-50">Environment</th>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'bg-success': environmentInfo.envName === 'production',
+                    'bg-warning text-dark': environmentInfo.envName === 'staging',
+                    'bg-info': environmentInfo.envName === 'development'
+                  }">
+                    {{ environmentInfo.envName }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Production Mode</th>
+                <td>
+                  <span [class]="environmentInfo.production ? 'text-success' : 'text-secondary'">
+                    {{ environmentInfo.production }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">API URL</th>
+                <td><code>{{ environmentInfo.apiUrl }}</code></td>
+              </tr>
+              <tr>
+                <th scope="row">Analytics Enabled</th>
+                <td>{{ environmentInfo.features.enableAnalytics }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Debug Mode</th>
+                <td>{{ environmentInfo.features.enableDebugMode }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulated API Call -->
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Test API Service</h5>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small">
+            The API service uses <code>environment.apiUrl</code> for all requests.
+            Click below to simulate an API call.
+          </p>
+
+          <div class="d-flex gap-2 mb-3">
+            <button
+              class="btn btn-primary"
+              (click)="simulateApiCall()"
+              [disabled]="isLoading"
+            >
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
+              {{ isLoading ? 'Calling API...' : 'Simulate API Call' }}
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              (click)="clearResponse()"
+              *ngIf="apiResponse"
+            >
+              Clear
+            </button>
+          </div>
+
+          <div *ngIf="apiResponse" class="alert alert-success">
+            <strong>Response received!</strong>
+            <small class="d-block text-muted">
+              {{ apiResponse.message }} at {{ apiResponse.timestamp | date:'medium' }}
+            </small>
+          </div>
+
+          <div *ngIf="apiResponse?.data" class="mt-2">
+            <h6>Data:</h6>
+            <pre class="bg-light p-2 rounded"><code>{{ apiResponse?.data | json }}</code></pre>
+          </div>
+
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">How It Works</h5>
+        </div>
+        <div class="card-body">
+          <div class="accordion">
+            <!-- Environment Files -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button"
+                  [class.collapsed]="activePanel !== 1"
+                  type="button"
+                  (click)="togglePanel(1)">
+                  1. Environment Files
+                </button>
+              </h2>
+              <div class="accordion-collapse" [class.show]="activePanel === 1">
+                <div class="accordion-body">
+                  <p>Create separate environment files for each deployment target:</p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h6>Development</h6>
+                      <pre class="bg-dark text-light p-3 rounded"><code>{{ codeSnippets.environmentFile }}</code></pre>
+                    </div>
+                    <div class="col-md-6">
+                      <h6>Production</h6>
+                      <pre class="bg-dark text-light p-3 rounded"><code>{{ codeSnippets.environmentProd }}</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Using in Services -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button"
+                  [class.collapsed]="activePanel !== 2"
+                  type="button"
+                  (click)="togglePanel(2)">
+                  2. Using in Services
+                </button>
+              </h2>
+              <div class="accordion-collapse" [class.show]="activePanel === 2">
+                <div class="accordion-body">
+                  <p>Import and use the environment configuration in your services:</p>
+                  <pre class="bg-dark text-light p-3 rounded"><code>{{ codeSnippets.serviceUsage }}</code></pre>
+                  <div class="alert alert-info mt-3">
+                    <strong>Key Point:</strong> Always import from <code>environments/environment</code> (without suffix).
+                    Angular CLI handles the file swap at build time.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Angular.json Configuration -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button"
+                  [class.collapsed]="activePanel !== 3"
+                  type="button"
+                  (click)="togglePanel(3)">
+                  3. angular.json Configuration
+                </button>
+              </h2>
+              <div class="accordion-collapse" [class.show]="activePanel === 3">
+                <div class="accordion-body">
+                  <p>Configure file replacements in <code>angular.json</code>:</p>
+                  <pre class="bg-dark text-light p-3 rounded"><code>{{ codeSnippets.angularJson }}</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Build Commands -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button"
+                  [class.collapsed]="activePanel !== 4"
+                  type="button"
+                  (click)="togglePanel(4)">
+                  4. Build Commands
+                </button>
+              </h2>
+              <div class="accordion-collapse" [class.show]="activePanel === 4">
+                <div class="accordion-body">
+                  <p>Use different configurations when building or serving:</p>
+                  <pre class="bg-dark text-light p-3 rounded"><code>{{ codeSnippets.buildCommands }}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Best Practices</h5>
+        </div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li><strong>Never commit secrets:</strong> Don't put API keys, passwords, or tokens in environment files. Use server-side environment variables.</li>
+            <li><strong>Type safety:</strong> Create an interface for your environment object to get TypeScript support.</li>
+            <li><strong>Minimal differences:</strong> Keep the structure identical across all environment files, only change values.</li>
+            <li><strong>Feature flags:</strong> Use environment files to enable/disable features per environment.</li>
+            <li><strong>CI/CD integration:</strong> Your build pipeline should use <code>--configuration=production</code> for production builds.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

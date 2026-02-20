@@ -1,0 +1,36 @@
+.operation-log {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid #333;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+pre {
+  font-size: 0.8rem;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+code {
+  font-size: 0.85em;
+}
+
+.card {
+  transition: box-shadow 0.2s;
+}
+
+.btn {
+  text-align: left;
+}

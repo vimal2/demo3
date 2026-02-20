@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Angular Forms & Configuration</h1>
+      <p class="lead">
+        Explore different approaches to building forms in Angular and learn best practices
+        for application configuration.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4" *ngFor="let form of formTypes">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">{{ form.title }}</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ form.description }}</p>
+          <h6>Features Demonstrated:</h6>
+          <ul class="small">
+            <li *ngFor="let feature of form.features">{{ feature }}</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a [routerLink]="form.route" class="btn btn-primary w-100">
+            View Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col">
+      <div class="alert alert-info">
+        <h5>Template-Driven vs Reactive Forms</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Template-Driven:</strong>
+            <ul class="mb-0">
+              <li>Simpler for basic forms</li>
+              <li>Less code in component</li>
+              <li>Uses directives (ngModel)</li>
+              <li>Asynchronous form creation</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <strong>Reactive:</strong>
+            <ul class="mb-0">
+              <li>More control and flexibility</li>
+              <li>Easier to test</li>
+              <li>Programmatic form creation</li>
+              <li>Synchronous form creation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

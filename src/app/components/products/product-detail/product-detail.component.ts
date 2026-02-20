@@ -29,7 +29,6 @@ export class ProductDetailComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.product = data['product'];
     });
-
   }
 
   goBack(): void {

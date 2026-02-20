@@ -1,0 +1,196 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/services">Services</a></li>
+          <li class="breadcrumb-item active">State Management</li>
+        </ol>
+      </nav>
+      <h2>State Management Demo</h2>
+      <p class="text-muted">
+        Compare BehaviorSubject-based state management with Angular Signals.
+        Both patterns manage reactive state in services.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- BehaviorSubject Demo -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">BehaviorSubject Pattern</h5>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h1 class="display-3">{{ behaviorSubjectState?.count }}</h1>
+            <p class="text-muted">Last action: {{ behaviorSubjectState?.lastAction }}</p>
+          </div>
+
+          <div class="d-flex justify-content-center gap-2 mb-4">
+            <button class="btn btn-outline-primary" (click)="decrementSubject()">
+              - Decrement
+            </button>
+            <button class="btn btn-outline-secondary" (click)="resetSubject()">
+              Reset
+            </button>
+            <button class="btn btn-outline-primary" (click)="incrementSubject()">
+              + Increment
+            </button>
+          </div>
+
+          <div class="mb-3">
+            <strong>History:</strong>
+            <div class="d-flex gap-1 flex-wrap mt-1">
+              <span *ngFor="let h of behaviorSubjectState?.history" class="badge bg-light text-dark">
+                {{ h }}
+              </span>
+            </div>
+          </div>
+
+          <div class="alert alert-info small mb-0">
+            <strong>Key Points:</strong>
+            <ul class="mb-0 ps-3">
+              <li>State stored in BehaviorSubject</li>
+              <li>Exposed as Observable with <code>asObservable()</code></li>
+              <li>Requires subscription & unsubscription</li>
+              <li>Use <code>takeUntil</code> for cleanup</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signals Demo -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">Angular Signals Pattern</h5>
+        </div>
+        <div class="card-body">
+          <div class="text-center mb-4">
+            <h1 class="display-3">{{ counterSignal.count() }}</h1>
+            <p class="text-muted">Last action: {{ counterSignal.lastAction() }}</p>
+          </div>
+
+          <div class="d-flex justify-content-center gap-2 mb-4">
+            <button class="btn btn-outline-success" (click)="decrementSignal()">
+              - Decrement
+            </button>
+            <button class="btn btn-outline-secondary" (click)="resetSignal()">
+              Reset
+            </button>
+            <button class="btn btn-outline-success" (click)="incrementSignal()">
+              + Increment
+            </button>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-6">
+              <strong>Double:</strong> {{ counterSignal.doubleCount() }}
+            </div>
+            <div class="col-6">
+              <strong>Absolute:</strong> {{ counterSignal.absoluteCount() }}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <strong>History:</strong>
+            <div class="d-flex gap-1 flex-wrap mt-1">
+              <span *ngFor="let h of counterSignal.history()" class="badge bg-light text-dark">
+                {{ h }}
+              </span>
+            </div>
+          </div>
+
+          <div class="alert alert-success small mb-0">
+            <strong>Key Points:</strong>
+            <ul class="mb-0 ps-3">
+              <li>Use <code>signal()</code> for writable state</li>
+              <li>Use <code>computed()</code> for derived state</li>
+              <li>No subscription needed!</li>
+              <li>Auto-cleanup, no memory leaks</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">BehaviorSubject Service</h6>
+        </div>
+        <div class="card-body p-0">
+          <pre class="bg-dark text-light p-3 mb-0 small"><code>{{ codeSnippets.behaviorSubject }}</code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Signal Service</h6>
+        </div>
+        <div class="card-body p-0">
+          <pre class="bg-dark text-light p-3 mb-0 small"><code>{{ codeSnippets.signalService }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="mb-0">Comparison</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Aspect</th>
+              <th>BehaviorSubject</th>
+              <th>Signals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Subscription</strong></td>
+              <td>Required - must subscribe and unsubscribe</td>
+              <td>Not needed - auto-tracks dependencies</td>
+            </tr>
+            <tr>
+              <td><strong>Memory Management</strong></td>
+              <td>Manual cleanup with takeUntil/unsubscribe</td>
+              <td>Automatic cleanup</td>
+            </tr>
+            <tr>
+              <td><strong>Derived State</strong></td>
+              <td>Use combineLatest, map operators</td>
+              <td>Use computed() - simpler syntax</td>
+            </tr>
+            <tr>
+              <td><strong>Side Effects</strong></td>
+              <td>Use tap operator or subscribe</td>
+              <td>Use effect()</td>
+            </tr>
+            <tr>
+              <td><strong>Template Usage</strong></td>
+              <td>Use async pipe or component property</td>
+              <td>Call signal directly: {{ '{{ signal() }}' }}</td>
+            </tr>
+            <tr>
+              <td><strong>Best For</strong></td>
+              <td>Complex async streams, HTTP, events</td>
+              <td>Synchronous state, UI state, forms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

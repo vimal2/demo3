@@ -1,0 +1,39 @@
+pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.skill-row {
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.experience-item {
+  background-color: #f8f9fa;
+}
+
+.log-container {
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}

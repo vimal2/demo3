@@ -1,0 +1,251 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/services">Services</a></li>
+          <li class="breadcrumb-item active">Dependency Injection</li>
+        </ol>
+      </nav>
+      <h2>Dependency Injection Patterns</h2>
+      <p class="text-muted">
+        Angular's DI system provides multiple ways to configure how services are created and shared.
+      </p>
+    </div>
+  </div>
+
+  <!-- Live Demo Section -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Live Demo: Component-Level Provider</h5>
+        </div>
+        <div class="card-body">
+          <p class="small text-muted">
+            This component uses <code>providers: [{{ '{' }} provide: LoggerService, useClass: ConsoleLoggerService {{ '}' }}]</code>
+          </p>
+
+          <div class="d-flex gap-2 mb-3">
+            <button class="btn btn-info btn-sm" (click)="testLogger('info')">
+              Log Info
+            </button>
+            <button class="btn btn-warning btn-sm" (click)="testLogger('warn')">
+              Log Warning
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="testLogger('error')">
+              Log Error
+            </button>
+            <button class="btn btn-secondary btn-sm" (click)="clearLogs()">
+              Clear
+            </button>
+          </div>
+
+          <div class="log-output">
+            <div *ngFor="let log of logs" class="log-entry small">
+              <span class="text-muted">{{ log.timestamp | date:'HH:mm:ss' }}</span>
+              <span class="badge bg-secondary ms-1">{{ log.source }}</span>
+              <span class="ms-1">{{ log.message }}</span>
+            </div>
+            <div *ngIf="logs.length === 0" class="text-muted small">
+              No logs yet. Click buttons above to test.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">InjectionToken Demo</h5>
+        </div>
+        <div class="card-body">
+          <p class="small text-muted">
+            Configuration injected via <code>@Inject(APP_CONFIG)</code>
+          </p>
+
+          <table class="table table-sm table-bordered">
+            <tbody>
+              <tr>
+                <th>App Name</th>
+                <td>{{ config.appName }}</td>
+              </tr>
+              <tr>
+                <th>Version</th>
+                <td>{{ config.version }}</td>
+              </tr>
+              <tr>
+                <th>API URL</th>
+                <td><code class="small">{{ config.apiUrl }}</code></td>
+              </tr>
+              <tr>
+                <th>Dark Mode</th>
+                <td>
+                  <span [class]="config.features.darkMode ? 'badge bg-success' : 'badge bg-secondary'">
+                    {{ config.features.darkMode ? 'Enabled' : 'Disabled' }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th>Analytics</th>
+                <td>
+                  <span [class]="config.features.analytics ? 'badge bg-success' : 'badge bg-secondary'">
+                    {{ config.features.analytics ? 'Enabled' : 'Disabled' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DI Patterns Overview -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">DI Provider Types</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div *ngFor="let pattern of diPatterns" class="col-md-6 col-lg-4 mb-3">
+          <div class="card h-100 pattern-card">
+            <div class="card-body">
+              <h6 class="card-title">
+                <span class="me-2">{{ pattern.icon }}</span>
+                {{ pattern.name }}
+              </h6>
+              <p class="card-text small">{{ pattern.description }}</p>
+              <p class="card-text small text-muted mb-0">
+                <strong>Use case:</strong> {{ pattern.useCase }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code Examples Tabs -->
+  <div class="card">
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'providedIn'"
+             (click)="setActiveTab('providedIn')" href="javascript:void(0)">
+            providedIn
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'component'"
+             (click)="setActiveTab('component')" href="javascript:void(0)">
+            Component
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'useClass'"
+             (click)="setActiveTab('useClass')" href="javascript:void(0)">
+            useClass
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'useFactory'"
+             (click)="setActiveTab('useFactory')" href="javascript:void(0)">
+            useFactory
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'useValue'"
+             (click)="setActiveTab('useValue')" href="javascript:void(0)">
+            useValue
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'token'"
+             (click)="setActiveTab('token')" href="javascript:void(0)">
+            InjectionToken
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body p-0">
+      <div *ngIf="activeTab === 'providedIn'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>providedIn: 'root'</strong> - Creates a singleton shared across the entire app
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.providedInRoot }}</code></pre>
+        <div class="p-3 bg-light border-top">
+          <strong>providedIn: 'any'</strong> - Creates instance per lazy-loaded module
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.providedInAny }}</code></pre>
+      </div>
+
+      <div *ngIf="activeTab === 'component'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>Component-level providers</strong> - New instance for each component
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.componentLevel }}</code></pre>
+      </div>
+
+      <div *ngIf="activeTab === 'useClass'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>useClass</strong> - Substitute one class implementation for another
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.useClass }}</code></pre>
+      </div>
+
+      <div *ngIf="activeTab === 'useFactory'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>useFactory</strong> - Create instance using factory function
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.useFactory }}</code></pre>
+      </div>
+
+      <div *ngIf="activeTab === 'useValue'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>useValue</strong> - Provide a constant value directly
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.useValue }}</code></pre>
+      </div>
+
+      <div *ngIf="activeTab === 'token'">
+        <div class="p-3 bg-light border-bottom">
+          <strong>InjectionToken</strong> - For non-class dependencies
+        </div>
+        <pre class="bg-dark text-light p-3 mb-0"><code>{{ codeSnippets.injectionToken }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <h5 class="mb-0">Best Practices</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6 class="text-success">✓ Do</h6>
+          <ul class="small">
+            <li>Use <code>providedIn: 'root'</code> for app-wide singletons</li>
+            <li>Use InjectionToken for configuration objects</li>
+            <li>Keep services focused on single responsibility</li>
+            <li>Use interfaces for service contracts</li>
+            <li>Prefer constructor injection over field injection</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6 class="text-danger">✗ Avoid</h6>
+          <ul class="small">
+            <li>Circular dependencies between services</li>
+            <li>Large "god" services that do everything</li>
+            <li>Calling <code>new Service()</code> directly</li>
+            <li>Storing UI state in root services</li>
+            <li>Forgetting to provide services in lazy modules when needed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

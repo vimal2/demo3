@@ -1,5 +1,31 @@
-.card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
+.card {
   transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.jumbotron {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+pre {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+code {
+  font-size: 0.8rem;
+}
+
+.table-sm td, .table-sm th {
+  padding: 0.5rem;
+}
+
+.badge {
+  font-weight: normal;
 }
